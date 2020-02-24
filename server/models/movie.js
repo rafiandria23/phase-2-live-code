@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       year: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
       },
       imdbID: {
         type: DataTypes.STRING
@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Movie.associate = function(models) {
     // associations can be defined here
+    Movie.hasMany(models.Rate);
   };
   
   return Movie;
