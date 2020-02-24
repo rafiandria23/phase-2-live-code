@@ -28,7 +28,7 @@ class MovieController {
     const movieId = Number(req.params.id);
     const movieData = {
       title: req.body.title,
-      year: req.body.year,
+      year: Number(req.body.year),
       type: req.body.type,
       poster: req.body.poster
     };
