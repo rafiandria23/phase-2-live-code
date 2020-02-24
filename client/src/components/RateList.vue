@@ -10,7 +10,9 @@
             {{ rate.reviewer }}
           </footer>
         </blockquote>
-      <button class="btn btn-primary mt-3" @click="deleteRate(rate.id)">Delete Rate</button>
+        <button class="btn btn-primary mt-3" @click="deleteRate(rate.id)">
+          Delete Rate
+        </button>
       </div>
     </div>
   </div>
@@ -24,23 +26,37 @@ export default {
       return this.$store.state.currentMovie.Rates;
     },
     deleteRate(id) {
-      this.$axios.delete(`/rates/${id}`)
-        .then(({data}) => {
-          console.log(data);
-          this.$store.dispatch('fetchMovies');
-          this.$router.push({ name: 'Movie Detail' });
-        }).catch((err) => {
-          console.log(err.response);
-        });
+      this.$Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(result => {
+        if (result.value) {
+          this.$axios
+            .delete(`/rates/${id}`)
+            .then(({ data }) => {
+              this.$Swal.fire('Deleted!', data.message, 'success');
+              this.$store.dispatch('fetchMovies');
+              this.$router.push({ name: 'Home' });
+            })
+            .catch(err => {
+              console.log(err.response);
+            });
+        }
+      });
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-  .rate-list-container {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-  }
+.rate-list-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
 </style>

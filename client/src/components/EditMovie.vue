@@ -63,9 +63,15 @@ export default {
       this.$axios
         .put(`/movies/${movieId}`, this.movieDataForm)
         .then(({ data }) => {
-          console.log(data);
           this.$store.dispatch('fetchMovies');
-          this.$router.push({ path: '/' });
+          this.$Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.$router.push({ name: 'Home' });
         })
         .catch(err => {
           console.log(err.response);

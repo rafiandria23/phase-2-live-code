@@ -41,12 +41,24 @@ export default {
       this.$axios
         .post(`/rates/${movieId}`, this.rateDataForm)
         .then(({ data }) => {
-          console.log(data);
           this.$store.dispatch('fetchMovies');
-          this.$router.push({ name: 'Movie Detail' });
+          this.$Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.$router.push({ name: 'Home' });
         })
         .catch(err => {
-          console.log(err.response);
+          if (err.response.status === 400) {
+            this.$Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: err.response.data.message
+            });
+          }
         });
     }
   }

@@ -34,7 +34,7 @@ class MovieController {
     };
     Movie.update(movieData, { where: { id: movieId } })
       .then(movie => {
-        res.status(200).json({ movie: movieData });
+        res.status(200).json({ movie: movieData, message: 'Successfully updated movie!' });
       })
       .catch(err => {
         next(err);
