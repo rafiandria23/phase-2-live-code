@@ -1,31 +1,45 @@
 <template>
-  <div class="container edit-movie-container">
-    <form>
+  <div class="container edit-movie-container mt-5">
+    <form @submit.prevent="updateMovie()">
       <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
+        <label for="movie-title">Title</label>
         <input
-          type="email"
+          type="text"
           class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
+          id="movie-title"
+          v-model="movieDataForm.title"
         />
-        <small id="emailHelp" class="form-text text-muted"
-          >We'll never share your email with anyone else.</small
+      </div>
+      <div class="form-group">
+        <label for="movie-year">Year</label>
+        <input
+          type="number"
+          class="form-control"
+          id="movie-year"
+          v-model="movieDataForm.year"
+        />
+      </div>
+      <div class="form-group">
+        <label for="movie-type">Type</label>
+        <select
+          v-model="movieDataForm.type"
+          class="form-control"
+          id="movie-type"
         >
+          <option value="movie" selected>Movie</option>
+          <option value="series">Series</option>
+        </select>
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
+        <label for="movie-poster">Poster</label>
         <input
-          type="password"
+          type="text"
           class="form-control"
-          id="exampleInputPassword1"
+          id="movie-poster"
+          v-model="movieDataForm.poster"
         />
       </div>
-      <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Edit Movie</button>
     </form>
   </div>
 </template>
@@ -33,16 +47,29 @@
 <script>
 export default {
   name: 'EditMovie',
-  props: ['movieData'],
   data() {
     return {
-      title: '',
-      year: ''
-    }
+      movieDataForm: {
+        title: this.$store.state.currentMovie.title,
+        year: this.$store.state.currentMovie.year,
+        type: this.$store.state.currentMovie.type.toLowerCase(),
+        poster: this.$store.state.currentMovie.poster
+      }
+    };
   },
   methods: {
     updateMovie() {
-
+      const movieId = this.$route.params.id;
+      this.$axios
+        .put(`/movies/${movieId}`, this.movieDataForm)
+        .then(({ data }) => {
+          console.log(data);
+          this.$store.dispatch('fetchMovies');
+          this.$router.push({ path: '/' });
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
     }
   }
 };

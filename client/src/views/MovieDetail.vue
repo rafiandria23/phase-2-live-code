@@ -30,17 +30,17 @@
     <div class="action-container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <router-link class="nav-link" to="/home">
+          <router-link class="nav-link" :to="{name: 'Edit Movie'}">
             Edit Movie
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/home">
+          <router-link class="nav-link" :to="{name: 'Rate Movie'}">
             Rate Movie
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/home">
+          <router-link class="nav-link" :to="{name: 'Rate List'}">
             Movie Ratings
           </router-link>
         </li>
